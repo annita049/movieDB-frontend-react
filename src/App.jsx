@@ -2,6 +2,8 @@ import {useEffect, useState} from 'react';
 import Search from './components/Search';
 import Spinner from './components/Spinner';
 import MovieCard from './components/movieCard';
+import { useDebounce } from 'react-use';
+
 
 const API_URL = import.meta.env.VITE_TMDB_API_URL;
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
@@ -20,6 +22,12 @@ const App = ()=> {
   const [errorMessage, setErrorMessage] = useState('');
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [debouncedSearchString, setDebouncedSearchString] = useState('');
+
+  // debounce the search string by prevent making api requests for every single change in searchString
+
+  useDebounce(()=> setDebouncedSearchString(searchString), 500,
+  [searchString]);
 
   const fetchMovies = async(query = '')=> {
 
@@ -50,13 +58,12 @@ const App = ()=> {
       // console.log(object);
       setIsLoading(false);
     }
-
-
   }
 
+
   useEffect(()=>{
-    fetchMovies(searchString);
-  }, [searchString]);
+    fetchMovies(debouncedSearchString);
+  }, [debouncedSearchString]);
 
 
   return (
