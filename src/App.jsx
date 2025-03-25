@@ -14,7 +14,6 @@ const API_OPTIONS = {
   }
 }
 
-
 const App = ()=> {
     
   const [searchString, setSearchString] = useState('');
@@ -22,7 +21,7 @@ const App = ()=> {
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchMovies = async()=> {
+  const fetchMovies = async(query = '')=> {
 
     setIsLoading(true);
     setErrorMessage('');
@@ -56,14 +55,14 @@ const App = ()=> {
   }
 
   useEffect(()=>{
-    fetchMovies();
-  }, []);
+    fetchMovies(searchString);
+  }, [searchString]);
 
 
   return (
     <main>
 
-      {/* <div className='pattern'/> */}
+      <div className='pattern'/>
         <div className="wrapper">
           <header>
             <img src="./hero.png" alt="" />
@@ -90,8 +89,6 @@ const App = ()=> {
 
           </section>
         </div>
-        {/* <h1>{searchString}</h1> */}
-
     </main>
   )
 }
